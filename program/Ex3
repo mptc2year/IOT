@@ -1,1 +1,52 @@
 
+#include <LiquidCrystal.h>
+
+// Initialize the LCD pins: RS, E, D4, D5, D6, D7
+LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+
+// Ultrasonic sensor pins
+const int trigPin = 9;
+const int echoPin = 10;
+
+void setup()
+{
+  lcd.begin(16, 2);  // Initialize the LCD
+
+  pinMode(trigPin, OUTPUT);  // Set trigPin as output
+  pinMode(echoPin, INPUT);   // Set echoPin as input
+
+  lcd.print("Distance:");  // Display static text
+}
+
+void loop()
+{
+  long duration;
+  float distance;
+
+  // Send a 10-microsecond pulse to trigger the ultrasonic sensor
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+
+  digitalWrite(trigPin, LOW);
+
+  // Read the time it takes for the echo to return
+  duration = pulseIn(echoPin, HIGH);
+
+  // Calculate distance (in cm)
+  distance = duration * 0.034 / 2;
+
+  // Display the distance on the LCD
+  lcd.setCursor(0, 1);
+
+  lcd.print("                ");  // Clear previous value
+
+  lcd.setCursor(0, 1);
+  lcd.print(distance);
+  lcd.print(" cm");
+
+  delay(500);  // Update every 500ms
+}
+
