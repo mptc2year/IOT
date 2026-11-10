@@ -1,1 +1,44 @@
 
+#include <Servo.h>
+
+int p = 0;
+
+Servo myServo;  // Create a Servo object
+
+const int IR_SENSOR_PIN = 2;  // IR sensor digital output connected to pin 2
+const int SERVO_PIN = 9;      // Servo motor control pin
+
+void setup()
+{
+  pinMode(IR_SENSOR_PIN, INPUT);  // Set IR sensor pin as input
+
+  myServo.attach(SERVO_PIN);  // Attach the servo to pin 9
+
+  myServo.write(0);  // Initialize servo to 0 degrees
+
+  Serial.begin(9600);  // Start serial communication for debugging
+}
+
+void loop()
+{
+  int sensorState = digitalRead(IR_SENSOR_PIN);  // Read the state of the IR sensor
+
+  if (sensorState == HIGH)
+  {
+    // If the sensor detects an object
+    myServo.write(90);  // Rotate the servo to 90 degrees
+
+    Serial.println("Object detected! Rotating to 90 degrees.");
+
+    delay(1000);  // Delay to hold the servo position
+  }
+  else
+  {
+    myServo.write(0);  // Rotate the servo back to 0 degrees
+
+    Serial.println("No object detected. Returning to 0 degrees.");
+
+    delay(1000);  // Delay to hold the servo position
+  }
+}
+
